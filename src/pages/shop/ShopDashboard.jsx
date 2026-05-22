@@ -76,7 +76,7 @@ const ShopDashboard = () => {
     try {
       const { data } = await shopApi.distribute({
         rationCardNumber: verifyForm.rationCardNumber,
-        verificationMethod: 'Aadhaar',
+        verificationMethod: 'MANUAL',
       })
       if (data.success) {
         showMsg(`Distributed! Receipt: ${data.distribution.receiptId}`, 'success')
