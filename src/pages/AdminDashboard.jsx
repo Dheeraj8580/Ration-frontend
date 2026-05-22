@@ -664,7 +664,7 @@ const AdminDashboard = () => {
             {/* Users Tab Content */}
             {activeTab === 'users' && (
               <Card>
-                <div className="p-6 border-b border-slate-200 flex justify-between items-center">
+                <div className="p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                   <div>
                     <h3 className="text-lg font-bold text-slate-900">User Management</h3>
                     <p className="text-sm text-slate-500">Manage registered citizens and staff</p>
@@ -729,7 +729,7 @@ const AdminDashboard = () => {
             {/* Shop Verification Tab Content */}
             {activeTab === 'shops' && (
               <Card>
-                <div className="p-6 border-b border-slate-200 flex justify-between items-center">
+                <div className="p-6 border-b border-slate-200 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                   <div>
                     <h3 className="text-lg font-bold text-slate-900">Shop Verification</h3>
                     <p className="text-sm text-slate-500">Approve or reject shop owner applications</p>
