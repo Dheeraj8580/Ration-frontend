@@ -25,7 +25,8 @@ import {
   ChevronLeft,
   ChevronRight,
   BarChart3,
-  PieChart
+  PieChart,
+  ShieldCheck
 } from 'lucide-react'
 
 const AdminDashboard = () => {
@@ -41,6 +42,9 @@ const AdminDashboard = () => {
     fetchAdminStats,
     approveApplication,
     rejectApplication,
+    fetchShopOwners,
+    approveShopOwner,
+    rejectShopOwner,
   } = useAuth()
 
   const [activeTab, setActiveTab] = useState(tabParam)
@@ -54,6 +58,9 @@ const AdminDashboard = () => {
   const [isAppsLoading, setIsAppsLoading] = useState(true)
   const [adminStats, setAdminStats] = useState({ total: 0, pending: 0, approved: 0, rejected: 0 })
   const [showNotifications, setShowNotifications] = useState(false)
+  
+  const [shopOwners, setShopOwners] = useState([])
+  const [isShopsLoading, setIsShopsLoading] = useState(false)
   useEffect(() => {
     setActiveTab(tabParam)
     setCurrentPage(1)
@@ -185,12 +192,44 @@ const AdminDashboard = () => {
     }
   }
 
+  useEffect(() => {
+    if (activeTab === 'shops') {
+      loadShopOwners()
+    }
+  }, [activeTab])
+
+  const loadShopOwners = async () => {
+    setIsShopsLoading(true)
+    const result = await fetchShopOwners()
+    if (result.success) {
+      setShopOwners(result.shopOwners || [])
+    }
+    setIsShopsLoading(false)
+  }
+
+  const handleApproveShop = async (id) => {
+    if (window.confirm('Approve this shop owner?')) {
+      const result = await approveShopOwner(id)
+      if (result.success) loadShopOwners()
+      else alert(result.error || 'Failed to approve shop owner')
+    }
+  }
+
+  const handleRejectShop = async (id) => {
+    const reason = window.prompt('Enter rejection reason:')
+    if (!reason) return
+    const result = await rejectShopOwner(id, reason)
+    if (result.success) loadShopOwners()
+    else alert(result.error || 'Failed to reject shop owner')
+  }
+
   const tabs = [
     { id: 'all', label: 'All', count: applications.length },
     { id: 'pending', label: 'Pending', count: applications.filter(a => a.status === 'pending').length },
     { id: 'approved', label: 'Approved', count: applications.filter(a => a.status === 'approved').length },
     { id: 'rejected', label: 'Rejected', count: applications.filter(a => a.status === 'rejected').length },
     { id: 'users', label: 'Users', count: users.length },
+    { id: 'shops', label: 'Shop Verification', count: shopOwners.length },
   ]
 
   return (
@@ -447,7 +486,7 @@ const AdminDashboard = () => {
                     {/* Tabs & Search */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-6">
                       <div className="flex space-x-1 bg-slate-100 p-1 rounded-lg overflow-x-auto">
-                        {tabs.filter(t => !['users', 'settings'].includes(t.id)).map((tab) => (
+                        {tabs.filter(t => !['users', 'settings', 'shops'].includes(t.id)).map((tab) => (
                           <button
                             key={tab.id}
                             onClick={() => handleTabChange(tab.id)}
@@ -677,6 +716,81 @@ const AdminDashboard = () => {
                               >
                                 <X className="w-4 h-4" />
                               </button>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </Card>
+            )}
+
+            {/* Shop Verification Tab Content */}
+            {activeTab === 'shops' && (
+              <Card>
+                <div className="p-6 border-b border-slate-200 flex justify-between items-center">
+                  <div>
+                    <h3 className="text-lg font-bold text-slate-900">Shop Verification</h3>
+                    <p className="text-sm text-slate-500">Approve or reject shop owner applications</p>
+                  </div>
+                  <Button icon={ShieldCheck} onClick={loadShopOwners}>Refresh List</Button>
+                </div>
+                
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-slate-50">
+                      <tr>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Owner Name</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Contact</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Shop Info</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase">Status</th>
+                        <th className="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200">
+                      {isShopsLoading ? (
+                        <tr><td colSpan="5" className="p-12 text-center text-slate-500">Loading shop owners...</td></tr>
+                      ) : shopOwners.length === 0 ? (
+                        <tr><td colSpan="5" className="p-12 text-center text-slate-500">No shop owners found</td></tr>
+                      ) : (
+                        shopOwners.map((owner) => (
+                          <tr key={owner._id} className="hover:bg-slate-50">
+                            <td className="px-6 py-4 whitespace-nowrap font-medium text-slate-900">{owner.name}</td>
+                            <td className="px-6 py-4 whitespace-nowrap text-xs text-slate-600">
+                              {owner.email}<br/>{owner.mobile}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                              {owner.shopId ? (owner.shopId.shopCode || owner.shopId.name || 'Shop Assigned') : 'No Shop'}
+                            </td>
+                            <td className="px-6 py-4 whitespace-nowrap">
+                              <span className={`px-2 py-1 rounded-full text-[10px] font-bold ${
+                                owner.shopOwnerStatus === 'Approved' ? 'bg-success-100 text-success-700' :
+                                owner.shopOwnerStatus === 'Rejected' ? 'bg-danger-100 text-danger-700' :
+                                'bg-warning-100 text-warning-700'
+                              }`}>
+                                {owner.shopOwnerStatus || 'Pending'}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-right space-x-2 flex justify-end">
+                              {owner.shopOwnerStatus !== 'Approved' && (
+                                <button 
+                                  onClick={() => handleApproveShop(owner._id)}
+                                  className="p-2 text-success-600 hover:bg-success-50 rounded-lg transition-colors"
+                                  title="Approve"
+                                >
+                                  <Check className="w-4 h-4" />
+                                </button>
+                              )}
+                              {owner.shopOwnerStatus !== 'Rejected' && (
+                                <button 
+                                  onClick={() => handleRejectShop(owner._id)}
+                                  className="p-2 text-danger-600 hover:bg-danger-50 rounded-lg transition-colors"
+                                  title="Reject"
+                                >
+                                  <X className="w-4 h-4" />
+                                </button>
+                              )}
                             </td>
                           </tr>
                         ))

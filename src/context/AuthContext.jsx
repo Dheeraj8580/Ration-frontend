@@ -215,6 +215,33 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const fetchShopOwners = async () => {
+    try {
+      const { data } = await adminApi.shopOwners();
+      return data;
+    } catch (error) {
+      return { success: false, error: error.friendlyMessage };
+    }
+  };
+
+  const approveShopOwner = async (id) => {
+    try {
+      const { data } = await adminApi.approveShopOwner(id);
+      return data;
+    } catch (error) {
+      return { success: false, error: error.friendlyMessage };
+    }
+  };
+
+  const rejectShopOwner = async (id, rejectionReason) => {
+    try {
+      const { data } = await adminApi.rejectShopOwner(id, { rejectionReason });
+      return data;
+    } catch (error) {
+      return { success: false, error: error.friendlyMessage };
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -240,6 +267,9 @@ export const AuthProvider = ({ children }) => {
         approveApplication,
         rejectApplication,
         submitApplication,
+        fetchShopOwners,
+        approveShopOwner,
+        rejectShopOwner,
       }}
     >
       {children}

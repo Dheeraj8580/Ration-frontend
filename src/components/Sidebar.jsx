@@ -46,6 +46,7 @@ const Sidebar = ({ userType = 'user' }) => {
     { name: 'Approved', path: '/admin', icon: CheckCircle, query: 'approved' },
     { name: 'Rejected', path: '/admin', icon: XCircle, query: 'rejected' },
     { name: 'Users', path: '/admin', icon: Users, query: 'users' },
+    { name: 'Shop Verification', path: '/admin', icon: ShieldCheck, query: 'shops' },
   ]
 
   const links = userType === 'admin' ? adminLinks : userLinks
