@@ -198,7 +198,7 @@ const AdminDashboard = () => {
                 </button>
 
                 {showNotifications && (
-                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-slate-200 z-50 py-2">
+                  <div className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 max-w-sm bg-white rounded-2xl shadow-xl border border-slate-200 z-50 py-2 sm:-right-0 -right-4">
                     <div className="px-4 py-3 border-b border-slate-100 flex justify-between items-center">
                       <h3 className="font-semibold text-slate-900">Notifications</h3>
                       <span className="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-bold">2 New</span>
