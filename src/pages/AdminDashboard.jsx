@@ -51,7 +51,7 @@ const AdminDashboard = () => {
   const [applications, setApplications] = useState([])
   const [isAppsLoading, setIsAppsLoading] = useState(true)
   const [adminStats, setAdminStats] = useState({ total: 0, pending: 0, approved: 0, rejected: 0 })
-
+  const [showNotifications, setShowNotifications] = useState(false)
   useEffect(() => {
     setActiveTab(tabParam)
   }, [tabParam])
@@ -188,10 +188,58 @@ const AdminDashboard = () => {
               <p className="text-sm text-slate-500">Manage applications and monitor system</p>
             </div>
             <div className="flex items-center space-x-4">
-              <button className="relative p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors">
-                <Bell className="w-6 h-6" />
-                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-danger-500 rounded-full border-2 border-white"></span>
-              </button>
+              <div className="relative">
+                <button 
+                  onClick={() => setShowNotifications(!showNotifications)}
+                  className="relative p-2 text-slate-500 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors"
+                >
+                  <Bell className="w-6 h-6" />
+                  <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-danger-500 rounded-full border-2 border-white"></span>
+                </button>
+
+                {showNotifications && (
+                  <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-slate-200 z-50 py-2">
+                    <div className="px-4 py-3 border-b border-slate-100 flex justify-between items-center">
+                      <h3 className="font-semibold text-slate-900">Notifications</h3>
+                      <span className="text-xs bg-primary-100 text-primary-700 px-2 py-0.5 rounded-full font-bold">2 New</span>
+                    </div>
+                    <div className="max-h-80 overflow-y-auto">
+                      <div className="px-4 py-3 hover:bg-slate-50 cursor-pointer transition-colors border-b border-slate-50">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-success-100 flex items-center justify-center shrink-0">
+                            <CheckCircle className="w-4 h-4 text-success-600" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-slate-900">System is Online</p>
+                            <p className="text-xs text-slate-500 mt-0.5">All services are running normally without any interruptions.</p>
+                            <p className="text-xs text-slate-400 mt-1">Just now</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="px-4 py-3 hover:bg-slate-50 cursor-pointer transition-colors">
+                        <div className="flex items-start gap-3">
+                          <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center shrink-0">
+                            <FileText className="w-4 h-4 text-primary-600" />
+                          </div>
+                          <div>
+                            <p className="text-sm font-semibold text-slate-900">New Applications</p>
+                            <p className="text-xs text-slate-500 mt-0.5">You have new pending citizen applications to review.</p>
+                            <p className="text-xs text-slate-400 mt-1">2 hours ago</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="px-4 py-2.5 border-t border-slate-100 text-center bg-slate-50 rounded-b-xl">
+                      <button 
+                        onClick={() => setShowNotifications(false)}
+                        className="text-sm text-primary-600 hover:text-primary-700 font-bold"
+                      >
+                        Mark all as read
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
               <div className="flex items-center space-x-3 pl-4 border-l border-slate-200">
                 <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
                   <Users className="w-5 h-5 text-primary-600" />

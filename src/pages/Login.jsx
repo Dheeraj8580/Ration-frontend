@@ -3,7 +3,6 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { Mail, Lock, ArrowLeft, AlertCircle, ShieldCheck, User, Store } from 'lucide-react'
 import { useAuth } from '../context/AuthContext'
 
-const DEFAULT_ADMIN_EMAIL = 'dheerajk.jk@gmail.com'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -45,8 +44,8 @@ const Login = () => {
     setErrors({})
     if (role === 'admin') {
       setFormData({
-        email: DEFAULT_ADMIN_EMAIL,
-        password: 'Ration',
+        email: '',
+        password: '',
       })
     }
   }
@@ -286,12 +285,7 @@ const Login = () => {
               </p>
             )}
 
-            {isAdminMode && (
-              <div className="mt-6 text-center text-xs text-slate-500 space-y-1">
-                <p>Default admin: <strong className="text-slate-300">dheerajk.jk@gmail.com</strong> / <strong className="text-slate-300">Ration</strong></p>
-                <p>Alternate: admin@gov.in / Admin@123</p>
-              </div>
-            )}
+
           </div>
 
           {isShopMode && (
