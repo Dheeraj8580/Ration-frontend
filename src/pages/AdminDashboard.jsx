@@ -45,6 +45,8 @@ const AdminDashboard = () => {
 
   const [activeTab, setActiveTab] = useState(tabParam)
   const [searchQuery, setSearchQuery] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
+  const itemsPerPage = 10
   const [selectedApplication, setSelectedApplication] = useState(null)
   const [showModal, setShowModal] = useState(false)
   const [rejectReason, setRejectReason] = useState('')
@@ -54,12 +56,18 @@ const AdminDashboard = () => {
   const [showNotifications, setShowNotifications] = useState(false)
   useEffect(() => {
     setActiveTab(tabParam)
+    setCurrentPage(1)
   }, [tabParam])
 
   const handleTabChange = (tabId) => {
     setActiveTab(tabId)
+    setCurrentPage(1)
     setSearchParams({ tab: tabId })
   }
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchQuery])
 
   const loadApplications = useCallback(async () => {
     setIsAppsLoading(true)
@@ -94,6 +102,16 @@ const AdminDashboard = () => {
     if (activeTab === 'all' || activeTab === 'users') return true
     return app.status === activeTab
   })
+
+  const totalPages = Math.ceil(filteredApplications.length / itemsPerPage) || 1
+  const startIndex = (currentPage - 1) * itemsPerPage
+  const paginatedApplications = filteredApplications.slice(startIndex, startIndex + itemsPerPage)
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage)
+    }
+  }
 
   const handleViewApplication = (app) => {
     setSelectedApplication(app)
@@ -496,9 +514,9 @@ const AdminDashboard = () => {
                       <tbody className="divide-y divide-slate-200">
                         {isAppsLoading ? (
                           <tr><td colSpan={6} className="px-6 py-12 text-center text-slate-500">Loading applications...</td></tr>
-                        ) : filteredApplications.length === 0 ? (
+                        ) : paginatedApplications.length === 0 ? (
                           <tr><td colSpan={6} className="px-6 py-12 text-center text-slate-500">No applications found</td></tr>
-                        ) : filteredApplications.map((app) => (
+                        ) : paginatedApplications.map((app) => (
                           <tr key={app.id} className="hover:bg-slate-50 transition-colors">
                             <td className="px-6 py-4 whitespace-nowrap">
                               <span className="text-sm font-medium text-slate-900">{app.id}</span>
@@ -566,22 +584,36 @@ const AdminDashboard = () => {
                   {/* Pagination */}
                   <div className="px-6 py-4 border-t border-slate-200 flex items-center justify-between">
                     <p className="text-sm text-slate-500">
-                      Showing <span className="font-medium">1</span> to <span className="font-medium">{filteredApplications.length}</span> of <span className="font-medium">{applications.length}</span> results
+                      Showing <span className="font-medium">{filteredApplications.length === 0 ? 0 : startIndex + 1}</span> to <span className="font-medium">{Math.min(startIndex + itemsPerPage, filteredApplications.length)}</span> of <span className="font-medium">{filteredApplications.length}</span> results
                     </p>
                     <div className="flex items-center space-x-2">
-                      <button className="p-2 border border-slate-300 rounded-lg text-slate-500 hover:bg-slate-50 disabled:opacity-50">
+                      <button 
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="p-2 border border-slate-300 rounded-lg text-slate-500 hover:bg-slate-50 disabled:opacity-50 transition-colors"
+                      >
                         <ChevronLeft className="w-4 h-4" />
                       </button>
-                      <button className="px-3 py-2 bg-primary-600 text-white rounded-lg text-sm font-medium">
-                        1
-                      </button>
-                      <button className="px-3 py-2 border border-slate-300 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-50">
-                        2
-                      </button>
-                      <button className="px-3 py-2 border border-slate-300 text-slate-600 rounded-lg text-sm font-medium hover:bg-slate-50">
-                        3
-                      </button>
-                      <button className="p-2 border border-slate-300 rounded-lg text-slate-500 hover:bg-slate-50">
+                      
+                      {[...Array(totalPages)].map((_, i) => (
+                        <button 
+                          key={i}
+                          onClick={() => handlePageChange(i + 1)}
+                          className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                            currentPage === i + 1 
+                              ? 'bg-primary-600 text-white shadow-sm' 
+                              : 'border border-slate-300 text-slate-600 hover:bg-slate-50'
+                          }`}
+                        >
+                          {i + 1}
+                        </button>
+                      ))}
+                      
+                      <button 
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="p-2 border border-slate-300 rounded-lg text-slate-500 hover:bg-slate-50 disabled:opacity-50 transition-colors"
+                      >
                         <ChevronRight className="w-4 h-4" />
                       </button>
                     </div>
@@ -771,12 +803,16 @@ const AdminDashboard = () => {
                         addressProof: 'Address Proof (Utility Bill)',
                         incomeProof: 'Income Certificate'
                       }
+                      const fileUrl = value.startsWith('http') 
+                        ? value 
+                        : `${import.meta.env.VITE_API_URL}/${value.replace(/\\/g, '/').replace(/^\/+/, '')}`
+
                       return (
                         <div key={key} className="flex items-center px-4 py-2 bg-slate-100 rounded-lg border border-slate-200 shadow-sm">
                           <FileText className="w-4 h-4 text-slate-500 mr-2" />
                           <span className="text-sm text-slate-700 font-medium mr-4">{labelMap[key] || key}</span>
                           <a
-                            href={value}
+                            href={fileUrl}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-primary-600 hover:text-primary-700 text-sm font-semibold hover:underline"
