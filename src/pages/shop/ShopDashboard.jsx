@@ -130,7 +130,7 @@ const ShopDashboard = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <ShopSidebar tab={tab} setTab={setTab} user={user} onLogout={logout} />
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 pl-16 pr-6 py-8 sm:px-8 overflow-y-auto">
         <h1 className="text-2xl font-bold text-slate-900 mb-2">Ration Shop Portal</h1>
         <p className="text-slate-500 mb-6">
           {shopData?.shop?.name || '—'} ({shopData?.shop?.shopCode || '—'})
@@ -160,9 +160,9 @@ const ShopDashboard = () => {
             <input className="w-full border border-slate-200 rounded-lg px-3 py-2" placeholder="Wheat kg" value={stockForm.wheatKg} onChange={(e) => setStockForm({ ...stockForm, wheatKg: e.target.value })} />
             <input className="w-full border border-slate-200 rounded-lg px-3 py-2" placeholder="Sugar kg" value={stockForm.sugarKg} onChange={(e) => setStockForm({ ...stockForm, sugarKg: e.target.value })} />
             <input className="w-full border border-slate-200 rounded-lg px-3 py-2" placeholder="Supply note" value={stockForm.supplyNote} onChange={(e) => setStockForm({ ...stockForm, supplyNote: e.target.value })} />
-            <div className="flex gap-3">
-              <Button onClick={() => handleStockUpdate('set')} loading={actionLoading}>Set Stock</Button>
-              <Button variant="secondary" onClick={() => handleStockUpdate('add_supply')} loading={actionLoading}>Add Supply</Button>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button onClick={() => handleStockUpdate('set')} loading={actionLoading} className="w-full sm:w-auto">Set Stock</Button>
+              <Button variant="secondary" onClick={() => handleStockUpdate('add_supply')} loading={actionLoading} className="w-full sm:w-auto">Add Supply</Button>
             </div>
           </div>
         )}

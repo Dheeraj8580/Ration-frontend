@@ -182,7 +182,7 @@ const AdminDashboard = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         <header className="bg-white shadow-sm border-b border-slate-200">
-          <div className="flex items-center justify-between px-8 py-4">
+          <div className="flex items-center justify-between pl-16 pr-6 sm:px-8 py-4">
             <div>
               <h1 className="text-2xl font-bold text-slate-900">Admin Dashboard</h1>
               <p className="text-sm text-slate-500">Manage applications and monitor system</p>
@@ -206,7 +206,7 @@ const AdminDashboard = () => {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto space-y-8">
 
             {/* Dashboard Overview - Only show on application tabs */}
@@ -216,7 +216,7 @@ const AdminDashboard = () => {
                 {activeTab === 'all' && (
                   <section className="relative overflow-hidden bg-slate-900 rounded-[2rem] text-white shadow-2xl">
                     <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary-600/20 to-transparent"></div>
-                    <div className="relative px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div className="relative px-6 py-8 sm:px-8 sm:py-10 flex flex-col md:flex-row items-center justify-between gap-8">
                       <div className="max-w-xl">
                         <div className="inline-flex items-center px-3 py-1 bg-success-500/20 text-success-400 rounded-full text-xs font-bold mb-4 border border-success-500/30">
                           <span className="w-2 h-2 bg-success-500 rounded-full mr-2 animate-pulse"></span>
@@ -765,10 +765,10 @@ const AdminDashboard = () => {
                       onChange={(e) => setRejectReason(e.target.value)}
                     />
                   </div>
-                  <div className="flex gap-4">
+                  <div className="flex flex-col sm:flex-row gap-4">
                     <Button
                       variant="success"
-                      className="flex-1"
+                      className="w-full sm:flex-1"
                       onClick={() => handleApprove(selectedApplication.id)}
                       icon={Check}
                     >
@@ -776,7 +776,7 @@ const AdminDashboard = () => {
                     </Button>
                     <Button
                       variant="danger"
-                      className="flex-1"
+                      className="w-full sm:flex-1"
                       onClick={() => handleReject(selectedApplication.id)}
                       icon={X}
                     >

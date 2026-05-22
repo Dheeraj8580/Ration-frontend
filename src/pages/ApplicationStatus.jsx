@@ -143,7 +143,7 @@ const ApplicationStatus = () => {
         <div className="flex-1 flex flex-col overflow-y-auto">
           {/* Header */}
           <header className="bg-white border-b border-slate-200 shrink-0">
-            <div className="flex items-center justify-between px-8 py-5">
+            <div className="flex items-center justify-between pl-16 pr-6 sm:px-8 py-5">
               <div className="flex items-center space-x-4">
                 <Link
                   to={isLoggedIn ? "/dashboard" : "/"}
@@ -160,7 +160,7 @@ const ApplicationStatus = () => {
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 p-8">
+          <main className="flex-1 p-4 sm:p-6 lg:p-8">
             <div className="max-w-6xl mx-auto">
               {error ? (
                 <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-16 text-center">
@@ -305,11 +305,11 @@ const ApplicationStatus = () => {
                       </div>
 
                       {/* Actions */}
-                      <div className="mt-16 pt-8 border-t border-slate-100 flex flex-wrap gap-4">
+                      <div className="mt-16 pt-8 border-t border-slate-100 flex flex-col sm:flex-row flex-wrap gap-4">
                         {selectedApp.status === 'approved' && (
                           <Link
                             to="/digital-ration-card"
-                            className="inline-flex items-center px-8 py-4 bg-primary-600 text-white font-bold rounded-2xl hover:bg-primary-700 shadow-lg shadow-primary-100 transition-all active:scale-95"
+                            className="inline-flex items-center justify-center px-8 py-4 bg-primary-600 text-white font-bold rounded-2xl hover:bg-primary-700 shadow-lg shadow-primary-100 transition-all active:scale-95 w-full sm:w-auto"
                           >
                             <Download className="w-5 h-5 mr-3" />
                             Download Ration Card
@@ -317,7 +317,7 @@ const ApplicationStatus = () => {
                         )}
                         <Link 
                           to="/contact"
-                          className="inline-flex items-center px-8 py-4 bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-2xl hover:bg-slate-100 transition-all active:scale-95"
+                          className="inline-flex items-center justify-center px-8 py-4 bg-slate-50 border border-slate-200 text-slate-700 font-bold rounded-2xl hover:bg-slate-100 transition-all active:scale-95 w-full sm:w-auto"
                         >
                           <MessageSquare className="w-5 h-5 mr-3 text-slate-400" />
                           Contact Support

@@ -61,7 +61,7 @@ const RationCardDisplay = ({ user, id = 'ration-card-print' }) => {
       id={id}
       className="bg-white rounded-[2.5rem] shadow-2xl overflow-hidden border border-slate-100 print:shadow-none print:border-slate-300 print:rounded-none"
     >
-      <div className={`bg-gradient-to-r ${config.bg} p-8 text-white relative overflow-hidden`}>
+      <div className={`bg-gradient-to-r ${config.bg} p-6 sm:p-8 text-white relative overflow-hidden`}>
         <div className="flex flex-col sm:flex-row items-center justify-between gap-6 relative z-10">
           <div className="flex items-center gap-5">
             <div className="bg-white p-3 rounded-2xl shadow-xl">
@@ -80,8 +80,8 @@ const RationCardDisplay = ({ user, id = 'ration-card-print' }) => {
         </div>
       </div>
 
-      <div className="p-8 sm:p-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+      <div className="p-6 sm:p-10 md:p-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12">
           <div className="lg:col-span-4 flex flex-col items-center text-center">
             <div className="relative mb-8">
               <div className="w-48 h-48 bg-slate-100 rounded-[3rem] border-4 border-white shadow-xl overflow-hidden flex items-center justify-center">
@@ -133,7 +133,7 @@ const RationCardDisplay = ({ user, id = 'ration-card-print' }) => {
         </div>
       </div>
 
-      <div className="bg-slate-50 px-12 py-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="bg-slate-50 px-6 sm:px-12 py-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4">
         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
           Generated On: {new Date().toLocaleDateString('en-IN')}
         </p>

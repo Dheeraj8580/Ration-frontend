@@ -474,7 +474,7 @@ const ApplicationForm = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         <header className="bg-white shadow-sm border-b border-slate-200">
-          <div className="flex items-center justify-between px-8 py-4">
+          <div className="flex items-center justify-between pl-16 pr-6 sm:px-8 py-4">
             <div className="flex items-center space-x-4">
               <Link
                 to="/dashboard"
@@ -483,18 +483,18 @@ const ApplicationForm = () => {
                 <ArrowLeft className="w-5 h-5" />
               </Link>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">Apply for Ration Card</h1>
-                <p className="text-sm text-slate-500">Complete all steps to submit your application</p>
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Apply for Ration Card</h1>
+                <p className="text-xs sm:text-sm text-slate-500">Complete all steps to submit your application</p>
               </div>
             </div>
           </div>
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           <div className="max-w-4xl mx-auto">
-            {/* Stepper */}
-            <div className="mb-12 relative">
+            {/* Stepper - Desktop View */}
+            <div className="hidden md:block mb-12 relative">
               <div className="absolute top-6 left-16 right-16 h-1 bg-slate-200 z-0 rounded-full overflow-hidden">
                 <div
                   className="h-full bg-success-600 transition-all duration-500 ease-in-out"
@@ -525,6 +525,33 @@ const ApplicationForm = () => {
               </div>
             </div>
 
+            {/* Stepper - Mobile View */}
+            <div className="block md:hidden mb-8 bg-white border border-slate-100 rounded-3xl p-5 shadow-sm">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-2xl bg-primary-50 flex items-center justify-center text-primary-600 shadow-sm">
+                    {(() => {
+                      const ActiveIcon = steps[currentStep - 1].icon
+                      return <ActiveIcon className="w-5 h-5" />
+                    })()}
+                  </div>
+                  <div>
+                    <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider leading-none">Step {currentStep} of {steps.length}</p>
+                    <h3 className="font-bold text-slate-800 text-sm leading-none mt-1">{steps[currentStep - 1].title}</h3>
+                  </div>
+                </div>
+                <span className="text-xs font-black text-primary-600 bg-primary-50 px-3 py-1 rounded-full">
+                  {Math.round((currentStep / steps.length) * 100)}%
+                </span>
+              </div>
+              <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-primary-600 rounded-full transition-all duration-500 ease-in-out"
+                  style={{ width: `${(currentStep / steps.length) * 100}%` }}
+                ></div>
+              </div>
+            </div>
+
             {user?.applicationStatus === 'Rejected' && (
               <div className="mb-6 p-4 bg-danger-50 border border-danger-100 rounded-xl flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-danger-600 flex-shrink-0 mt-0.5" />
@@ -538,7 +565,7 @@ const ApplicationForm = () => {
             )}
 
             {/* Form */}
-            <form onSubmit={handleSubmit} className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 p-8 md:p-12 relative overflow-hidden">
+            <form onSubmit={handleSubmit} className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-100 p-5 sm:p-8 md:p-12 relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary-50 rounded-full blur-3xl -mr-32 -mt-32 pointer-events-none"></div>
               {/* Step 1: Personal Details */}
               {currentStep === 1 && (

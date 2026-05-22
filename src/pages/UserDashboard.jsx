@@ -126,9 +126,9 @@ const UserDashboard = () => {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="bg-white shadow-sm border-b border-slate-200">
-          <div className="flex items-center justify-between px-8 py-4">
+          <div className="flex items-center justify-between pl-16 pr-6 sm:px-8 py-4">
             <div>
-              <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Dashboard</h1>
               <p className="text-sm text-slate-500">Welcome back, {user.name}</p>
             </div>
             <div className="flex items-center space-x-4">
@@ -175,7 +175,7 @@ const UserDashboard = () => {
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
           <div className="max-w-7xl mx-auto space-y-8">
             <section className="relative overflow-hidden bg-gradient-to-r from-primary-700 to-primary-600 rounded-[2rem] text-white shadow-xl shadow-primary-100">
               <div className="relative px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-8">
@@ -238,21 +238,21 @@ const UserDashboard = () => {
                     <strong>Rejected:</strong> {user.rejectionReason}
                   </p>
                 )}
-                <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
-                  <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-50 rounded-xl gap-4">
+                  <div className="flex items-start sm:items-center space-x-4">
+                    <div className="w-12 h-12 bg-white rounded-lg flex items-center justify-center shadow-sm shrink-0">
                       <FileText className="w-6 h-6 text-primary-600" />
                     </div>
                     <div>
-                      <p className="font-semibold text-slate-900 text-lg">{userApplicationData.type}</p>
+                      <p className="font-semibold text-slate-900 text-base sm:text-lg">{userApplicationData.type}</p>
                       <p className="text-sm text-slate-500 flex items-center mt-1">
-                        <Calendar className="w-4 h-4 mr-1.5" />
+                        <Calendar className="w-4 h-4 mr-1.5 shrink-0" />
                         Registered on {userApplicationData.date}
                       </p>
                       <p className="text-xs text-slate-500 mt-1">Aadhaar: {user.aadhaarNumber}</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-6">
+                  <div className="flex items-center justify-between sm:justify-end space-x-4 sm:space-x-6 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0">
                     <StatusBadge status={userApplicationData.status} size="md" />
                     <Link
                       to="/status"
