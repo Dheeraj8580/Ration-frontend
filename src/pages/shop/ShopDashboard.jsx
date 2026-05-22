@@ -14,7 +14,7 @@ const ShopDashboard = () => {
   const [transactions, setTransactions] = useState([])
   const [summary, setSummary] = useState(null)
   const [complaints, setComplaints] = useState([])
-  const [verifyForm, setVerifyForm] = useState({ rationCardNumber: '', otp: '', aadhaarNumber: '' })
+  const [verifyForm, setVerifyForm] = useState({ rationCardNumber: '', aadhaarNumber: '' })
   const [verified, setVerified] = useState(null)
   const [stockForm, setStockForm] = useState({ riceKg: '', wheatKg: '', sugarKg: '', supplyNote: '' })
   const [msg, setMsg] = useState({ type: '', text: '' })
@@ -76,13 +76,12 @@ const ShopDashboard = () => {
     try {
       const { data } = await shopApi.distribute({
         rationCardNumber: verifyForm.rationCardNumber,
-        otp: verifyForm.otp,
-        verificationMethod: 'OTP',
+        verificationMethod: 'Aadhaar',
       })
       if (data.success) {
         showMsg(`Distributed! Receipt: ${data.distribution.receiptId}`, 'success')
         setVerified(null)
-        setVerifyForm({ rationCardNumber: '', otp: '', aadhaarNumber: '' })
+        setVerifyForm({ rationCardNumber: '', aadhaarNumber: '' })
         await loadShop()
         if (tab === 'transactions') await loadTransactions()
       } else showMsg(data.message, 'error')
@@ -172,7 +171,6 @@ const ShopDashboard = () => {
             <div className="bg-white rounded-2xl p-6 shadow-sm space-y-4">
               <h2 className="font-semibold flex items-center gap-2"><ScanLine className="w-5 h-5 text-emerald-600" /> Verify & Distribute</h2>
               <input className="w-full border rounded-lg px-3 py-2" placeholder="Ration card number" value={verifyForm.rationCardNumber} onChange={(e) => setVerifyForm({ ...verifyForm, rationCardNumber: e.target.value })} />
-              <input className="w-full border rounded-lg px-3 py-2" placeholder="OTP from citizen" value={verifyForm.otp} onChange={(e) => setVerifyForm({ ...verifyForm, otp: e.target.value })} />
               <input className="w-full border rounded-lg px-3 py-2" placeholder="Aadhaar (optional)" value={verifyForm.aadhaarNumber} onChange={(e) => setVerifyForm({ ...verifyForm, aadhaarNumber: e.target.value })} />
               <Button onClick={handleVerify} loading={actionLoading}>Verify Citizen</Button>
               {verified && !verified.alreadyCollected && (
